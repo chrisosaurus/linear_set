@@ -1,0 +1,10 @@
+test_ls
+
+*.out
+
+*.o
+
+*.gcov
+*.gcno
+*.gcda
+
