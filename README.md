@@ -1,4 +1,4 @@
-# Linear set [![Build Status](https://travis-ci.org/mkfifo/linear_set.svg)](https://travis-ci.org/mkfifo/linear_set) [![Coverage Status](https://coveralls.io/repos/mkfifo/linear_set/badge.svg)](https://coveralls.io/r/mkfifo/linear_set)
+# Linear set [![Build Status](https://travis-ci.org/mkfifo/linear_set.svg)](https://travis-ci.org/mkfifo/linear_set) [![Coverage Status](https://coveralls.io/repos/mkfifo/linear_set/badge.svg)](https://coveralls.io/r/mkfifo/linear_set) <a href="https://scan.coverity.com/projects/4861"> <img alt="Coverity Scan Build Status" src="https://scan.coverity.com/projects/4861/badge.svg"/> </a>
 
 A set implementation written in pure C (c99), uses linear probing for hash collisions
 
