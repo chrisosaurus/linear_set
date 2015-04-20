@@ -45,21 +45,10 @@
  */
 #define ls_DEFAULT_THRESHOLD 6
 
-#ifdef ls_TEST
-/* when ls_TEST is defined we want our internal functions to be
- * exposed so that our testing code can access them
- * otherwise (when ifndef ls_TEST) we want them to be static
- */
-
-/* ignore missing prototype  warnings
- * but only during testing mode
+/* leaving this in place as we have some internal only helper functions
+ * that we only exposed to allow for easy testing and extension
  */
 #pragma GCC diagnostic ignored "-Wmissing-prototypes"
-#define LS_INTERNAL
-#else
-#define LS_INTERNAL static
-#endif
-
 
 /**********************************************
  **********************************************
@@ -69,11 +58,16 @@
  **********************************************
  ***********************************************/
 
+/* NOTE these helper functions are not exposed in our header
+ * but are not static so as to allow easy unit testing
+ * or extension
+ */
+
 /* logic for testing if the current entry is eq to the
  * provided hash, key_len and key
  * this is to centralise the once scattered logic
  */
-LS_INTERNAL unsigned int ls_entry_eq(struct ls_entry *cur, unsigned long int hash, unsigned long int key_len, char *key){
+unsigned int ls_entry_eq(struct ls_entry *cur, unsigned long int hash, unsigned long int key_len, char *key){
     if( ! cur ){
         puts("ls_entry_eq: cur was null");
         return 0;
@@ -103,7 +97,7 @@ LS_INTERNAL unsigned int ls_entry_eq(struct ls_entry *cur, unsigned long int has
  * returns char* to new memory containing a strcpy on success
  * returns 0 on error
  */
-LS_INTERNAL char * ls_strdupn(char *str, size_t len){
+char * ls_strdupn(char *str, size_t len){
     /* our new string */
     char *new_str = 0;
 
@@ -146,7 +140,7 @@ LS_INTERNAL char * ls_strdupn(char *str, size_t len){
  * returns 1 on success
  * returns 0 on error
  */
-LS_INTERNAL unsigned int ls_entry_init(struct ls_entry *entry,
+unsigned int ls_entry_init(struct ls_entry *entry,
                                        unsigned long int hash,
                                        char *key,
                                        size_t key_len){
@@ -201,7 +195,7 @@ LS_INTERNAL unsigned int ls_entry_init(struct ls_entry *entry,
  * returns 1 on success
  * returns 0 on error
  */
-LS_INTERNAL unsigned int ls_entry_destroy(struct ls_entry *entry){
+unsigned int ls_entry_destroy(struct ls_entry *entry){
     if( ! entry ){
         puts("ls_entry_destroy: entry undef");
         return 0;
@@ -219,7 +213,7 @@ LS_INTERNAL unsigned int ls_entry_destroy(struct ls_entry *entry){
  * returns a pointer to it on success
  * return 0 on failure
  */
-LS_INTERNAL struct ls_entry * ls_find_entry(struct ls_set *table, char *key){
+struct ls_entry * ls_find_entry(struct ls_set *table, char *key){
     /* our cur entry */
     struct ls_entry *cur = 0;
 

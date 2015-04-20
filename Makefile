@@ -10,7 +10,7 @@ EXTRAFLAGS =
 # default to error all: linear_set 
 %.o: %.c
 	@echo COMPILING CC $< with extra flags \"${EXTRAFLAGS}\"
-	@${CC} -g -c ${CFLAGS} -Dls_TEST $< ${EXTRAFLAGS} -o $@
+	@${CC} -g -c ${CFLAGS} $< ${EXTRAFLAGS} -o $@
 
 linear_set: ${OBJ}
 	@echo "ERROR: unable to compile linear_set on it's own as it is a library"
