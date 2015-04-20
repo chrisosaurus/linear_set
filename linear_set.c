@@ -33,17 +33,17 @@
 #include "linear_set.h"
 
 /* default number of slots */
-#define ls_DEFAULT_SIZE  32
+#define LS_DEFALT_SIZE  32
 
 /* factor we grow the number of slots by each resize */
-#define ls_SCALING_FACTOR 2
+#define LS_SCALING_FACTOR 2
 
 /* default loading factor we resize after in base 10
  * 0 through to 10
  *
  * default is 6 so 60 %
  */
-#define ls_DEFAULT_THRESHOLD 6
+#define LS_DEFALT_THRESHOLD 6
 
 /* leaving this in place as we have some internal only helper functions
  * that we only exposed to allow for easy testing and extension
@@ -334,7 +334,7 @@ unsigned int ls_load(struct ls_set *table){
  * load is (table->n_elems * 10) / table->size
  *
  * this sets ls_set->threshold
- * this defaults to ls_DEFAULT_THRESHOLD in linear_set.c
+ * this defaults to LS_DEFALT_THRESHOLD in linear_set.c
  * this is set to 6 (meaning 60% full) by default
  *
  * this will accept any value between 1 (10%) to 10 (100%)
@@ -454,7 +454,7 @@ struct ls_set * ls_new(void){
     }
 
     /* init */
-    if( ! ls_init(sht, ls_DEFAULT_SIZE) ){
+    if( ! ls_init(sht, LS_DEFALT_SIZE) ){
         puts("ls_new: call to ls_init failed");
         return 0;
     }
@@ -518,7 +518,7 @@ unsigned int ls_init(struct ls_set *table, size_t size){
 
     table->size      = size;
     table->n_elems   = 0;
-    table->threshold = ls_DEFAULT_THRESHOLD;
+    table->threshold = LS_DEFALT_THRESHOLD;
 
     /* calloc our buckets (pointer to ls_entry) */
     table->entries = calloc(size, sizeof(struct ls_entry));
@@ -703,7 +703,7 @@ unsigned int ls_insert(struct ls_set *table, char *key){
      * note we are checking the load before the insert
      */
     if( ls_load(table) >= table->threshold ){
-        if( ! ls_resize(table, table->size * ls_SCALING_FACTOR) ){
+        if( ! ls_resize(table, table->size * LS_SCALING_FACTOR) ){
             puts("ls_insert: call to ls_resize failed");
             return 0;
         }
