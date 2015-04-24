@@ -601,6 +601,10 @@ unsigned int ls_resize(struct ls_set *table, size_t new_size){
         }
 
         puts("ls_resize: failed to find spot for new element!");
+        /* make sure to free our new_entries since we don't store them
+         * no need to free items in as they are still held in our old elems
+         */
+        free(new_entries);
         return 0;
 
 ls_RESIZE_FOUND:
