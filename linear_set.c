@@ -589,7 +589,7 @@ unsigned int ls_resize(struct ls_set *table, size_t new_size){
             if( new_entries[j].state != ls_ENTRY_EMPTY ){
                 continue;
             }
-            goto ls_RESIZE_FOUND;
+            goto LS_RESIZE_FOUND;
         }
 
         for( j = 0; j < new_pos; ++ j){
@@ -597,7 +597,7 @@ unsigned int ls_resize(struct ls_set *table, size_t new_size){
             if( new_entries[j].state != ls_ENTRY_EMPTY ){
                 continue;
             }
-            goto ls_RESIZE_FOUND;
+            goto LS_RESIZE_FOUND;
         }
 
         puts("ls_resize: failed to find spot for new element!");
@@ -607,7 +607,7 @@ unsigned int ls_resize(struct ls_set *table, size_t new_size){
         free(new_entries);
         return 0;
 
-ls_RESIZE_FOUND:
+LS_RESIZE_FOUND:
         new_entries[j].hash    = cur->hash;
         new_entries[j].key     = cur->key;
         new_entries[j].key_len = cur->key_len;
@@ -738,7 +738,7 @@ unsigned int ls_insert(struct ls_set *table, char *key){
         }
 
         /* otherwise (empty or dummy) jump to found */
-        goto ls_INSERT_FOUND;
+        goto LS_INSERT_FOUND;
     }
 
     /* iterate from 0 to pos */
@@ -750,14 +750,14 @@ unsigned int ls_insert(struct ls_set *table, char *key){
         }
 
         /* otherwise (empty or dummy) jump to found */
-        goto ls_INSERT_FOUND;
+        goto LS_INSERT_FOUND;
     }
 
     /* no slot found */
     puts("ls_insert: unable to find insertion slot");
     return 0;
 
-ls_INSERT_FOUND:
+LS_INSERT_FOUND:
     /* she is already set! */
 
 #ifdef DEBUG
@@ -850,7 +850,7 @@ unsigned int ls_delete(struct ls_set *table, char *key){
             continue;
         }
 
-        goto ls_DELETE_FOUND;
+        goto LS_DELETE_FOUND;
     }
 
     /* if we are here then we hit the end,
@@ -875,14 +875,14 @@ unsigned int ls_delete(struct ls_set *table, char *key){
             continue;
         }
 
-        goto ls_DELETE_FOUND;
+        goto LS_DELETE_FOUND;
     }
 
     /* failed to find element */
     puts("ls_delete: failed to find key, both loops terminated");
     return 0;
 
-ls_DELETE_FOUND:
+LS_DELETE_FOUND:
         /* cur is already set! */
 
         /* clear out */
