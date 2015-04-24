@@ -456,6 +456,7 @@ struct ls_set * ls_new(void){
     /* init */
     if( ! ls_init(sht, LS_DEFALT_SIZE) ){
         puts("ls_new: call to ls_init failed");
+        free(sht);
         return 0;
     }
 
