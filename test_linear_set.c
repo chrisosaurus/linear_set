@@ -400,6 +400,7 @@ void internal(void){
     struct ls_set table;
     struct ls_entry she;
     struct ls_entry static_she;
+    char * c = 0;
 
     puts("\ntesting internal functions");
 
@@ -410,7 +411,9 @@ void internal(void){
     /* ls_strdupn */
     puts("testing ls_strdupn");
     assert( 0 == ls_strdupn(0, 6) );
-    assert( ls_strdupn("hello", 0) );
+    c = ls_strdupn("hello", 0);
+    assert(c);
+    free(c);
 
     /* ls_entry_new and ls_entry_init */
     puts("testing ls_entry_new and ls_entry_init");
