@@ -55,6 +55,13 @@ struct ls_set {
     struct ls_entry *entries;
 };
 
+/* function to return number of elements
+ *
+ * returns number on success
+ * returns 0 on error
+ */
+unsigned int ls_nelems(const struct ls_set *table);
+
 /* function to calculate load
  * (table->n_elems * 10) / table->size
  *

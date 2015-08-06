@@ -33,14 +33,14 @@ void new_insert_exists_destroy(void){
     table = ls_new();
     assert(table);
     assert( 32 == table->size );
-    assert( 0 == table->n_elems );
+    assert( 0 == ls_nelems(table) );
     assert( 0 == ls_load(table) );
 
 
     puts("testing insert and get");
     puts("one");
     assert( ls_insert(table, key_1) );
-    assert( 1 == table->n_elems );
+    assert( 1 == ls_nelems(table) );
     assert( 0 == ls_exists(table, key_2) );
     assert( 0 == ls_exists(table, key_3) );
     assert(ls_exists(table, key_1) );
@@ -48,14 +48,14 @@ void new_insert_exists_destroy(void){
 
     puts("two");
     assert( ls_insert(table, key_2) );
-    assert( 2 == table->n_elems );
+    assert( 2 == ls_nelems(table) );
     assert( 0 == ls_exists(table, key_3) );
     assert( ls_exists(table, key_2) );
 
 
     puts("three");
     assert( ls_insert(table, key_3) );
-    assert( 3 == table->n_elems );
+    assert( 3 == ls_nelems(table) );
     assert( ls_exists(table, key_3) );
 
 
@@ -78,32 +78,32 @@ void delete(void){
     table = ls_new();
     assert(table);
     assert( 32 == table->size );
-    assert( 0 == table->n_elems );
+    assert( 0 == ls_nelems(table) );
 
 
     puts("inserting some data");
     assert( ls_insert(table, key_1) );
-    assert( 1 == table->n_elems );
+    assert( 1 == ls_nelems(table) );
     assert( 0 == ls_exists(table, key_2) );
     assert( 0 == ls_exists(table, key_3) );
     assert( ls_exists(table, key_1) );
 
 
     assert( ls_insert(table, key_2) );
-    assert( 2 == table->n_elems );
+    assert( 2 == ls_nelems(table) );
     assert( 0 == ls_exists(table, key_3) );
     assert( ls_exists(table, key_2) );
 
 
     assert( ls_insert(table, key_3) );
-    assert( 3 == table->n_elems );
+    assert( 3 == ls_nelems(table) );
     assert( ls_exists(table, key_3) );
 
 
     puts("testing delete");
     puts("one delete");
     assert( ls_delete(table, key_1) );
-    assert( 2 == table->n_elems );
+    assert( 2 == ls_nelems(table) );
 
     /* should not be able to re-delete */
     assert( 0 == ls_delete(table, key_1) );
@@ -111,7 +111,7 @@ void delete(void){
 
     puts("two delete");
     assert( ls_delete(table, key_3) );
-    assert( 1 == table->n_elems );
+    assert( 1 == ls_nelems(table) );
 
     /* should not be able to re-delete */
     assert( 0 == ls_delete(table, key_3) );
@@ -119,7 +119,7 @@ void delete(void){
 
     puts("three delete");
     assert( ls_delete(table, key_2) );
-    assert( 0 == table->n_elems );
+    assert( 0 == ls_nelems(table) );
 
     /* should not be able to re-delete */
     assert( 0 == ls_delete(table, key_2) );
@@ -154,54 +154,54 @@ void collision(void){
     table = ls_new();
     assert(table);
     assert( 32 == table->size );
-    assert( 0 == table->n_elems );
+    assert( 0 == ls_nelems(table) );
     assert( 0 == ls_load(table) );
 
     /* artificially shrink down table */
     assert( ls_resize(table, 9) );
     assert( 9 == table->size );
-    assert( 0 == table->n_elems );
+    assert( 0 == ls_nelems(table) );
     assert( 0 == ls_load(table) );
 
 
     puts("inserting some data");
     assert( ls_insert(table, key_1) );
-    assert( 1 == table->n_elems );
+    assert( 1 == ls_nelems(table) );
     assert( ls_exists(table, key_1) );
 
     assert( ls_insert(table, key_2) );
-    assert( 2 == table->n_elems );
+    assert( 2 == ls_nelems(table) );
     assert( ls_exists(table, key_2) );
 
     assert( ls_insert(table, key_3) );
-    assert( 3 == table->n_elems );
+    assert( 3 == ls_nelems(table) );
     assert( ls_exists(table, key_3) );
 
     assert( ls_insert(table, key_4) );
-    assert( 4 == table->n_elems );
+    assert( 4 == ls_nelems(table) );
     assert( ls_exists(table, key_4) );
 
     assert( ls_insert(table, key_5) );
-    assert( 5 == table->n_elems );
+    assert( 5 == ls_nelems(table) );
     assert( ls_exists(table, key_5) );
 
     assert( ls_insert(table, key_6) );
-    assert( 6 == table->n_elems );
+    assert( 6 == ls_nelems(table) );
     assert( ls_exists(table, key_6) );
 
     assert( ls_insert(table, key_7) );
-    assert( 7 == table->n_elems );
+    assert( 7 == ls_nelems(table) );
     assert( ls_exists(table, key_7) );
 
     assert( ls_insert(table, key_8) );
-    assert( 8 == table->n_elems );
+    assert( 8 == ls_nelems(table) );
     assert( ls_exists(table, key_8) );
 
     assert( ls_insert(table, key_9) );
-    assert( 9 == table->n_elems );
+    assert( 9 == ls_nelems(table) );
     assert( ls_exists(table, key_9) );
 
-    assert( 9 == table->n_elems );
+    assert( 9 == ls_nelems(table) );
     /* assert that our resize succeeded and we
      * are not full */
     assert( 10 > ls_load(table) );
@@ -211,12 +211,12 @@ void collision(void){
     puts("testing delete collision handling");
 
     assert( ls_delete(table, key_1) );
-    assert( 8 == table->n_elems );
+    assert( 8 == ls_nelems(table) );
     /* should not be able to re-delete */
     assert( 0 == ls_delete(table, key_1) );
 
     assert( ls_delete(table, key_3) );
-    assert( 7 == table->n_elems );
+    assert( 7 == ls_nelems(table) );
     /* should not be able to re-delete */
     assert( 0 == ls_delete(table, key_3) );
 
@@ -259,35 +259,35 @@ void resize(void){
     table = ls_new();
     assert(table);
     assert( 32 == table->size );
-    assert( 0 == table->n_elems );
+    assert( 0 == ls_nelems(table) );
 
     /* artificially shrink down */
     assert( ls_resize(table, 3) );
     assert( 3 == table->size );
-    assert( 0 == table->n_elems );
+    assert( 0 == ls_nelems(table) );
 
     puts("inserting some data");
     assert( ls_insert(table, key_1) );
-    assert( 1 == table->n_elems );
+    assert( 1 == ls_nelems(table) );
     assert( 0 == ls_exists(table, key_2) );
     assert( 0 == ls_exists(table, key_3) );
     assert( ls_exists(table, key_1) );
 
 
     assert( ls_insert(table, key_2) );
-    assert( 2 == table->n_elems );
+    assert( 2 == ls_nelems(table) );
     assert( 0 == ls_exists(table, key_3) );
     assert( ls_exists(table, key_2) );
 
 
     assert( ls_insert(table, key_3) );
-    assert( 3 == table->n_elems );
+    assert( 3 == ls_nelems(table) );
     assert( ls_exists(table, key_3) );
 
 
     puts("testing resize");
     assert( ls_resize(table, 10) );
-    assert( 3  == table->n_elems );
+    assert( 3  == ls_nelems(table) );
     assert( 10 == table->size );
 
     puts("testing we can still fetch all the old values");
@@ -313,29 +313,33 @@ void error_handling(void){
     char *key_3 = "ccccc";
 
     puts("\ntesting handling of error cases");
+
+    puts("testing ls_nelems");
+    assert( 0 == ls_nelems(0) );
+
     puts("setting up...");
 
     puts("creating table");
     table = ls_new();
     assert(table);
     assert( 32 == table->size );
-    assert( 0 == table->n_elems );
+    assert( 0 == ls_nelems(table) );
 
     /* artificially shrink */
     assert( ls_resize(table, 3) );
     assert( 3 == table->size );
-    assert( 0 == table->n_elems );
+    assert( 0 == ls_nelems(table) );
 
     puts("inserting some data");
     assert( ls_insert(table, key_1) );
-    assert( 1 == table->n_elems );
+    assert( 1 == ls_nelems(table) );
     assert( 0 == ls_exists(table, key_2) );
     assert( 0 == ls_exists(table, key_3) );
     assert( ls_exists(table, key_1) );
 
 
     assert( ls_insert(table, key_2) );
-    assert( 2 == table->n_elems );
+    assert( 2 == ls_nelems(table) );
     assert( 0 == ls_exists(table, key_3) );
     assert( ls_exists(table, key_2) );
 
@@ -456,18 +460,18 @@ void load_resize(void){
     table = ls_new();
     assert(table);
     assert( 32 == table->size );
-    assert( 0 == table->n_elems );
+    assert( 0 == ls_nelems(table) );
     assert( 0 == ls_load(table) );
 
     /* artificially shrink */
     assert( ls_resize(table, 4) );
     assert( 4 == table->size );
-    assert( 0 == table->n_elems );
+    assert( 0 == ls_nelems(table) );
     assert( 0 == ls_load(table) );
 
     puts("adding some data to force a resize");
     assert( ls_insert(table, key_1) );
-    assert( 1 == table->n_elems );
+    assert( 1 == ls_nelems(table) );
     assert( 0 == ls_exists(table, key_2) );
     assert( 0 == ls_exists(table, key_3) );
     assert( ls_exists(table, key_1) );
@@ -478,7 +482,7 @@ void load_resize(void){
      * no resize
      */
     assert( 4 == table->size );
-    assert( 1 == table->n_elems );
+    assert( 1 == ls_nelems(table) );
     /* however the load now will be
      * 1 / 4 = 25 %
      */
@@ -486,7 +490,7 @@ void load_resize(void){
 
 
     assert( ls_insert(table, key_2) );
-    assert( 2 == table->n_elems );
+    assert( 2 == ls_nelems(table) );
     assert( 0 == ls_exists(table, key_3) );
     assert( ls_exists(table, key_2) );
 
@@ -496,7 +500,7 @@ void load_resize(void){
      * no resize
      */
     assert( 4 == table->size );
-    assert( 2 == table->n_elems );
+    assert( 2 == ls_nelems(table) );
     /* however the load now will be
      * 2 / 4 = 50 %
      */
@@ -504,7 +508,7 @@ void load_resize(void){
 
 
     assert( ls_insert(table, key_3) );
-    assert( 3 == table->n_elems );
+    assert( 3 == ls_nelems(table) );
     assert( ls_exists(table, key_3) );
 
     /* insert tests resize before inserting
@@ -513,7 +517,7 @@ void load_resize(void){
      * no resize
      */
     assert( 4 == table->size );
-    assert( 3 == table->n_elems );
+    assert( 3 == ls_nelems(table) );
     /* however the load now will be
      * 3 / 4 = 70 %
      * so this will trigger a resize (as 70 >= 60)
@@ -522,7 +526,7 @@ void load_resize(void){
 
 
     assert( ls_insert(table, key_4) );
-    assert( 4 == table->n_elems );
+    assert( 4 == ls_nelems(table) );
     assert( ls_exists(table, key_4) );
 
     /* insert tests resize before inserting
@@ -531,7 +535,7 @@ void load_resize(void){
      * so resize called to double
      */
     assert( 8 == table->size );
-    assert( 4 == table->n_elems );
+    assert( 4 == ls_nelems(table) );
     /* and after resizing the load now will be
      * 4 / 8 = 50 %
      */
@@ -581,7 +585,7 @@ void rollover(void){
     /* force resize to 2 */
     assert( ls_resize(table, 2) );
     assert( 2 == table->size );
-    assert( 0 == table->n_elems );
+    assert( 0 == ls_nelems(table) );
 
     /* insert 2 elements that we know will collide */
     assert( ls_insert(table, key) );
@@ -618,24 +622,24 @@ void threshold(void){
 
     /* insert 4 times checking there has been no resizing */
     assert( ls_insert(table, "a") );
-    assert( 1 == table->n_elems );
+    assert( 1 == ls_nelems(table) );
     assert( 4 == table->size );
 
     assert( ls_insert(table, "b") );
-    assert( 2 == table->n_elems );
+    assert( 2 == ls_nelems(table) );
     assert( 4 == table->size );
 
     assert( ls_insert(table, "c") );
-    assert( 3 == table->n_elems );
+    assert( 3 == ls_nelems(table) );
     assert( 4 == table->size );
 
     assert( ls_insert(table, "d") );
-    assert( 4 == table->n_elems );
+    assert( 4 == ls_nelems(table) );
     assert( 4 == table->size );
 
     /* insert 1 more and check resize */
     assert( ls_insert(table, "e") );
-    assert( 5 == table->n_elems );
+    assert( 5 == ls_nelems(table) );
     assert( 8 == table->size );
     assert( 10 == table->threshold );
 

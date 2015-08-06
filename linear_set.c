@@ -316,6 +316,20 @@ struct ls_entry * ls_find_entry(const struct ls_set *table, const char *key){
  **********************************************
  ***********************************************/
 
+/* function to return number of elements
+ *
+ * returns number on success
+ * returns 0 on error
+ */
+unsigned int ls_nelems(const struct ls_set *table){
+    if( ! table ){
+        puts("ls_nelems: table was null");
+        return 0;
+    }
+
+    return table->n_elems;
+}
+
 /* function to calculate load
  * (table->n_elems * 10) / table->size
  *
