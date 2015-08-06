@@ -8,3 +8,5 @@ test_ls
 *.gcno
 *.gcda
 
+*coveralls.sh
+
