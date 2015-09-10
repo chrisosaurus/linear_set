@@ -22,5 +22,7 @@ int main(void){
      * free table
      * destroy(table, free_table) */
     ls_destroy(s,     1);
+
+    return 0;
 }
 
