@@ -170,5 +170,5 @@ unsigned int ls_insert(struct ls_set *set, const char *key);
  */
 unsigned int ls_delete(struct ls_set *set, const char *key);
 
-#endif // ifndef LINEAR_SET_H
+#endif /* ifndef LINEAR_SET_H */
 
