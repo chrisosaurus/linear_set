@@ -31,7 +31,7 @@
 enum ls_entry_state {
     ls_ENTRY_EMPTY,
     ls_ENTRY_OCCUPIED,
-    ls_ENTRY_DUMMY // was occupied but now delete
+    ls_ENTRY_DUMMY /* was occupied but now delete */
 };
 
 struct ls_entry {
