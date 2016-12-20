@@ -571,7 +571,7 @@ void rollover(void){
      * the intention here is to force the second for loop
      * for insert and delete to activate
      */
-    set->entries[3].state = ls_ENTRY_OCCUPIED;
+    set->entries[3].state = LS_ENTRY_OCCUPIED;
 
     /* force insert to roll over */
     assert( ls_insert(set, key) );
@@ -580,7 +580,7 @@ void rollover(void){
     assert( ls_delete(set, key) );
 
     /* make sure to remark as empty */
-    set->entries[3].state = ls_ENTRY_EMPTY;
+    set->entries[3].state = LS_ENTRY_EMPTY;
 
     /* force resize to 2 */
     assert( ls_resize(set, 2) );
@@ -661,8 +661,8 @@ void artificial(void){
 
     puts("manipulating and testing of find and insert");
     /* fill only positions */
-    set->entries[0].state = ls_ENTRY_OCCUPIED;
-    set->entries[1].state = ls_ENTRY_OCCUPIED;
+    set->entries[0].state = LS_ENTRY_OCCUPIED;
+    set->entries[1].state = LS_ENTRY_OCCUPIED;
 
     /* this should trigger the final return 0 of ls_find_entry */
     assert( 0 == ls_find_entry(set, "hello") );
@@ -671,40 +671,40 @@ void artificial(void){
     assert( 0 == ls_insert(set, "c") );
 
     puts("further manipulation for ls_find_entry");
-    set->entries[0].state = ls_ENTRY_DUMMY;
-    set->entries[1].state = ls_ENTRY_DUMMY;
+    set->entries[0].state = LS_ENTRY_DUMMY;
+    set->entries[1].state = LS_ENTRY_DUMMY;
     assert( 0 == ls_find_entry(set, "c") );
 
-    set->entries[0].state   = ls_ENTRY_OCCUPIED;
+    set->entries[0].state   = LS_ENTRY_OCCUPIED;
     set->entries[0].hash    = 98; /* collide with b */
     set->entries[0].key_len = 2;
-    set->entries[1].state   = ls_ENTRY_OCCUPIED;
+    set->entries[1].state   = LS_ENTRY_OCCUPIED;
     set->entries[0].hash    = 98;
     set->entries[1].key_len = 2;
     assert( 0 == ls_find_entry(set, "b") );
 
-    set->entries[0].state   = ls_ENTRY_OCCUPIED;
+    set->entries[0].state   = LS_ENTRY_OCCUPIED;
     set->entries[0].hash    = 99; /* force hash collision with c */
     set->entries[0].key_len = 4; /* but with different len */
     set->entries[0].key     = "a";
-    set->entries[1].state   = ls_ENTRY_OCCUPIED;
+    set->entries[1].state   = LS_ENTRY_OCCUPIED;
     set->entries[1].hash    = 99; /* force hash collision with c */
     set->entries[1].key_len = 1;  /* with same len */
     set->entries[1].key     = "b"; /* but different key */
     assert( 0 == ls_find_entry(set, "c") );
 
     assert( ls_resize(set, 3) );
-    set->entries[0].state   = ls_ENTRY_OCCUPIED;
+    set->entries[0].state   = LS_ENTRY_OCCUPIED;
     set->entries[0].hash    = 98; /* force hash collision with b */
     set->entries[0].key_len = 4;  /* but with different len */
     set->entries[0].key     = "a";
 
-    set->entries[1].state   = ls_ENTRY_OCCUPIED;
+    set->entries[1].state   = LS_ENTRY_OCCUPIED;
     set->entries[1].hash    = 98; /* force hash collision with b */
     set->entries[1].key_len = 1;  /* with same len */
     set->entries[1].key     = "a"; /* but different key */
 
-    set->entries[2].state   = ls_ENTRY_DUMMY;
+    set->entries[2].state   = LS_ENTRY_DUMMY;
     assert( 0 == ls_find_entry(set, "b") );
 
     puts("manipulation to provoke ls_resize");
@@ -720,15 +720,15 @@ void artificial(void){
      * will increase n_elems and resize will refuse to
      * shrink below n_elems
      */
-    set->entries[0].state   = ls_ENTRY_OCCUPIED;
+    set->entries[0].state   = LS_ENTRY_OCCUPIED;
     set->entries[0].hash    = 101;
-    set->entries[1].state   = ls_ENTRY_OCCUPIED;
+    set->entries[1].state   = LS_ENTRY_OCCUPIED;
     set->entries[1].hash    = 101;
-    set->entries[2].state   = ls_ENTRY_OCCUPIED;
+    set->entries[2].state   = LS_ENTRY_OCCUPIED;
     set->entries[2].hash    = 101;
-    set->entries[3].state   = ls_ENTRY_OCCUPIED;
+    set->entries[3].state   = LS_ENTRY_OCCUPIED;
     set->entries[3].hash    = 101;
-    set->entries[4].state   = ls_ENTRY_OCCUPIED;
+    set->entries[4].state   = LS_ENTRY_OCCUPIED;
     set->entries[4].hash    = 101;
     /* we won't be able to fit everything in! */
     assert( 0 ==  ls_resize(set, 4) );
@@ -752,57 +752,57 @@ void artificial(void){
      *  for key 'g' we get hash '3'
      */
 
-    set->entries[4].state   = ls_ENTRY_EMPTY;
+    set->entries[4].state   = LS_ENTRY_EMPTY;
     assert( ls_resize(set, 4) );
 
-    set->entries[0].state   = ls_ENTRY_OCCUPIED;
+    set->entries[0].state   = LS_ENTRY_OCCUPIED;
     set->entries[0].hash    = 99; /* hash collide with c */
     set->entries[0].key_len = 2; /* different key len*/
 
-    set->entries[1].state   = ls_ENTRY_OCCUPIED;
+    set->entries[1].state   = LS_ENTRY_OCCUPIED;
     set->entries[1].hash    = 99;
     set->entries[1].key_len = 1;
     set->entries[1].key     = "z"; /* different key */
 
-    set->entries[2].state   = ls_ENTRY_DUMMY;
+    set->entries[2].state   = LS_ENTRY_DUMMY;
 
-    set->entries[3].state   = ls_ENTRY_OCCUPIED;
+    set->entries[3].state   = LS_ENTRY_OCCUPIED;
     set->entries[3].hash    = 99;
 
     assert( 0 == ls_delete(set, "c") );
 
-    set->entries[0].state   = ls_ENTRY_OCCUPIED;
+    set->entries[0].state   = LS_ENTRY_OCCUPIED;
     set->entries[0].hash    = 1; /* hash differ */
 
-    set->entries[1].state   = ls_ENTRY_OCCUPIED;
+    set->entries[1].state   = LS_ENTRY_OCCUPIED;
     set->entries[1].hash    = 100; /* hash collide with d */
     set->entries[1].key_len = 2; /* different key len*/
 
-    set->entries[2].state   = ls_ENTRY_OCCUPIED;
+    set->entries[2].state   = LS_ENTRY_OCCUPIED;
     set->entries[2].hash    = 100;
     set->entries[2].key_len = 1;
     set->entries[2].key     = "z"; /* different key */
 
-    set->entries[3].state   = ls_ENTRY_DUMMY;
+    set->entries[3].state   = LS_ENTRY_DUMMY;
 
     assert( 0 == ls_delete(set, "d") );
 
     /* we want to force wrap around
      * and then encounter an empty
      */
-    set->entries[0].state   = ls_ENTRY_EMPTY;
+    set->entries[0].state   = LS_ENTRY_EMPTY;
 
-    set->entries[1].state   = ls_ENTRY_OCCUPIED;
+    set->entries[1].state   = LS_ENTRY_OCCUPIED;
     set->entries[1].hash    = 99; /* hash collide with c */
     set->entries[1].key_len = 2; /* different key len*/
     set->entries[1].key     = "z"; /* different key */
 
-    set->entries[2].state   = ls_ENTRY_OCCUPIED;
+    set->entries[2].state   = LS_ENTRY_OCCUPIED;
     set->entries[2].hash    = 99; /* hash collide with c */
     set->entries[2].key_len = 2; /* different key len*/
     set->entries[2].key     = "z"; /* different key */
 
-    set->entries[3].state   = ls_ENTRY_OCCUPIED;
+    set->entries[3].state   = LS_ENTRY_OCCUPIED;
     set->entries[3].hash    = 99; /* hash collide with c */
     set->entries[3].key_len = 2; /* different key len*/
     set->entries[3].key     = "z"; /* different key */
