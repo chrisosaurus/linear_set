@@ -923,4 +923,60 @@ LS_DELETE_FOUND:
         return 1;
 }
 
+/* iterate through all keys in this set
+ * calling the provided function on each key.
+ *
+ * the function cannot modify the key.
+ * the function should not access the set in anyway including:
+ *  modifying the set in anyway
+ *  calling any other set functions
+ *
+ * the function will be given the value of the `state` pointer for each call,
+ * this is useful for passing state between calls to the function as well as
+ * for returning results
+ *
+ * the function should return
+ *  1 if it wants the iteration to continue
+ *  0 if it wants the iteration to stop
+ *
+ * returns 1 on success
+ * returns 0 on success
+ */
+unsigned int ls_iterate(struct ls_set *set, void *state, unsigned int (*each)(void *state, const char *key)){
+    /* index into table we are considering */
+    unsigned int i = 0;
+    unsigned int len = 0;
+    /* current entry we are considering */
+    struct ls_entry *entry = 0;
+    /* return value from user supplied function */
+    unsigned int ret = 0;
+
+    if( ! set ){
+        puts("ls_iterate: set undef");
+        return 0;
+    }
+
+    if( ! each ){
+        puts("ls_iterate: each undef");
+        return 0;
+    }
+
+    len = set->size;
+
+    for( i=0; i<len; ++i ){
+        entry = &(set->entries[i]);
+
+        if( entry->state == LS_ENTRY_OCCUPIED ){
+            ret = each(state, entry->key);
+
+            /* if ret == 0 then user wants us to stop */
+            if( ret == 0 ){
+                return 1;
+            }
+        }
+    }
+
+    return 1;
+
+}
 

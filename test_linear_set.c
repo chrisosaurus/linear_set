@@ -4,6 +4,7 @@
 #include <assert.h> /* assert */
 #include <stdio.h> /* puts */
 #include <stdlib.h> /* calloc */
+#include <string.h> /* strlen */
 
 #include "linear_set.h"
 
@@ -385,6 +386,13 @@ void error_handling(void){
     assert( 0 == ls_delete(set, 0) );
     /* cannot delete a non-existent key */
     assert( 0 == ls_delete(set, key_3) );
+
+    /* ls_iterate */
+    puts("testing ls_iterate");
+    /* table undef */
+    assert( 0 == ls_iterate(0, 0, 0) );
+    /* user-provided function undef */
+    assert( 0 == ls_iterate(set, 0, 0) );
 
     /* ls_tune_threshold */
     puts("testing ls_tune_threshold");
@@ -813,6 +821,146 @@ void artificial(void){
     puts("success!");
 }
 
+/* function used by our iterate test below */
+unsigned int iterate_sum(void *state, const char *key){
+    unsigned int *state_sums = 0;
+
+    if( ! state ){
+        puts("iterate_each: state undef");
+        assert(0);
+    }
+
+    if( ! key ){
+        puts("iterate_each: key undef");
+        assert(0);
+    }
+
+    state_sums = state;
+
+    state_sums[0] += strlen(key);
+    state_sums[1] += 1;
+
+    printf("iterate_sum: saw key '%s'\n", key);
+
+    return 1;
+}
+
+/* function used by our iterate test below */
+unsigned int iterate_first(void *state, const char *key){
+    unsigned int *state_firsts = 0;
+
+    if( ! state ){
+        puts("iterate_each: state undef");
+        assert(0);
+    }
+
+    if( ! key ){
+        puts("iterate_each: key undef");
+        assert(0);
+    }
+
+    state_firsts = state;
+
+    state_firsts[0] = strlen(key);
+    state_firsts[1] += 1;
+
+    printf("iterate_first: saw key '%s'\n", key);
+
+    return 0;
+}
+
+void iteration(void){
+    /* our simple hash set */
+    struct ls_set *set = 0;
+
+    /* some keys */
+    char *key_1 = "aa";
+    char *key_2 = "bbbb";
+    char *key_3 = "cccccc";
+
+    /* some data */
+    unsigned int data_1 = 3;
+    unsigned int data_2 = 5;
+    unsigned int data_3 = 7;
+
+    /* the value we pass to our iterate function
+     * the first element [0] is used for summing the length of keys
+     * the second element [1] is used to count the number of times called
+     */
+    unsigned int sums[] = {0, 0};
+    /* our expected answers */
+    unsigned int expected_sums[] = {
+        2 + 4 + 6, /* strlen(key_1) + strlen(key_2) + strlen(key_3) */
+        3, /* called 3 times */
+    };
+
+    /* the value we pass to our iterate_first function
+     * first value [0] is key length of first item seen
+     * second value [1] is the number of times iterate_first is called
+     */
+    unsigned int firsts[] = { 0, 0 };
+    unsigned int expected_firsts[] = {
+        2, /* strlen(key_1); */
+        1, /* we should only be called once */
+    };
+
+    puts("\ntesting iteration functionality");
+
+    puts("creating set");
+    set = ls_new();
+    assert(set);
+    assert( 0 == ls_nelems(set) );
+
+
+    puts("inserting some data");
+    assert( ls_insert(set, key_1) );
+    assert( 1 == ls_nelems(set) );
+    assert( ls_insert(set, key_2) );
+    assert( 2 == ls_nelems(set) );
+    assert( ls_insert(set, key_3) );
+    assert( 3 == ls_nelems(set) );
+
+    puts("testing iteration");
+    /* iterate through all 3 values
+     * sum up length of all keys
+     * record number of times called
+     */
+    assert( ls_iterate(set, sums, iterate_sum) );
+    if( sums[0] != expected_sums[0] ){
+        printf("iteration failed: expected key len sum '%u' but got '%u'\n",
+            expected_sums[0],
+            sums[0]);
+        assert( sums[0] == expected_sums[0] );
+    }
+    if( sums[1] != expected_sums[1] ){
+        printf("iteration failed: expected to be called '%u' times, but got '%u'\n",
+            expected_sums[1],
+            sums[1]);
+        assert( sums[1] == expected_sums[1] );
+    }
+
+    /* iterate and stop after first item (returning 0 to signal stop)
+     * record key length of last (and only) item seen
+     * count number of times called
+     */
+    assert( ls_iterate(set, firsts, iterate_first) );
+    if( firsts[0] != expected_firsts[0] ){
+        printf("iteration failed: expected key len firsts '%u' but got '%u'\n",
+            expected_firsts[0],
+            firsts[0]);
+        assert( firsts[0] == expected_firsts[0] );
+    }
+    if( firsts[1] != expected_firsts[1] ){
+        printf("iteration failed: expected to be called '%u' times, but got '%u'\n",
+            expected_firsts[1],
+            firsts[1]);
+        assert( firsts[1] == expected_firsts[1] );
+    }
+
+    assert( ls_destroy(set, 1) );
+    puts("success!");
+}
+
 int main(void){
     new_insert_exists_destroy();
 
@@ -833,6 +981,8 @@ int main(void){
     threshold();
 
     artificial();
+
+    iteration();
 
     puts("\noverall testing success!");
 
