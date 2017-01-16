@@ -1,5 +1,8 @@
 TODO:
 
+* port over search logic centralisation commit from linear_hash
+* consider removing dummy(s) here too
+* profile and compare: (1) original, (2) centralisation, (3) centralised without dummys
 * document all the crazy in test_linear_set.c
 * consider abstracting calloc calls
 * consider allowing a compile option to cause allocs to fail for testing
