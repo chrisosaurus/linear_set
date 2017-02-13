@@ -1,6 +1,7 @@
 TODO:
 
 * port over search logic centralisation commit from linear_hash
+* we also want a ls_set (regardless of ls_exists)
 * consider removing dummy(s) here too
 * profile and compare: (1) original, (2) centralisation, (3) centralised without dummys
 * document all the crazy in test_linear_set.c
